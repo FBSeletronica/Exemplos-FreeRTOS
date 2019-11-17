@@ -3,6 +3,7 @@
 * Pisca o LED da placa em intervalos de 200 milisegundo e
 * Envia a mensagem "Oi" a cada 10 segundos
 * Exemplo para verificar o funcionamento de um RTOS
+*
 * Por: Fábio Souza
 *********************************************************/
 
@@ -33,7 +34,7 @@ void setup() {
     ,  NULL);        // handle da task
 }
 
-//Função Loop
+//Função loop
 void loop() { 
   vTaskDelay(pdMS_TO_TICKS(100000));
   Serial.println("Oi");
