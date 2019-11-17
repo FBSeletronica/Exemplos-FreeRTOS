@@ -19,6 +19,7 @@
 /* Protótipo da Task*/
 void vTaskBlink(void *pvParameters ); 
 
+/*Função setup - é chamada apenas uma vez na inicialização */
 void setup() {
 
   Serial.begin(9600);
