@@ -1,7 +1,7 @@
 /*********************************************************
-* Exemplo Criação de Task
+* Exemplo de Utilitários de tarefas
 * 
-* Esse exemplo exibe como criar duas tasks com diferentes tamanhos de Stacks
+* 
 *
 * Por: Fábio Souza
 *********************************************************/
@@ -16,8 +16,8 @@
 /*Definição do Pino do LED*/
 #define LED 2
 /* Variáveis para Armazenar o handle da Task */
-TaskHandle_t task1Handle = NULL;
-TaskHandle_t task2Handle = NULL;
+TaskHandle_t xTask1Handle;
+TaskHandle_t xTask2Handle;
 
 /* Protótipo das Tasks*/
 void vTask1(void *pvParameters ); 
@@ -34,20 +34,20 @@ void setup() {
 
   xTaskCreate(
      vTask1
-    ,  "Task1"              /* Nome da Task */
-    ,  configMINIMAL_STACK_SIZE /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  NULL                     /* parametro passado para a task*/
+    ,  "Task1"                    /* Nome da Task */
+    ,  2048                      /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  NULL                       /* parametro passado para a task*/
     ,  1                        /* Prioridade da task*/
-    ,  &task1Handle             /* handle da task*/
+    ,  &xTask1Handle             /* handle da task*/
     );    
 
     xTaskCreate(
      vTask2
     ,  "Task2"                  /* Nome da Task */
-    ,  1024                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
     ,  NULL                     /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
-    ,  &task2Handle             /* handle da task*/
+    ,  &xTask2Handle             /* handle da task*/
     );       
 }
 
@@ -68,13 +68,19 @@ void loop() {
 void vTask1(void *pvParameters )
 {
   (void) pvParameters;
+  TickType_t xLastWakeTime;
+
+  /* The xLastWakeTime variable needs to be initialized with the current tick count.
+ This is the only time the variable is written to explicitly. After this, xLastWakeTime is
+ automatically updated within vTaskDelayUntil(). */
+ xLastWakeTime = xTaskGetTickCount();
 
   while(1)
   {
     digitalWrite(LED,HIGH);
-    vTaskDelay(pdMS_TO_TICKS(100));
+    vTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS( 100) );
     digitalWrite(LED,LOW);
-    vTaskDelay(pdMS_TO_TICKS(1000));    /* Delay de 1 segundos */
+    vTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS( 900 ) );    /* Delay de 900 milisegundos */
   }
 }
 
@@ -87,6 +93,6 @@ void vTask2(void *pvParameters )
   while(1)
   {
     Serial.println("Task 2: " + String(count++));
-    vTaskDelay(pdMS_TO_TICKS(1000));    /* Delay de 1 segundos */
+    vTaskDelay(pdMS_TO_TICKS(500));    /* Delay de 1 segundos */
   }
 }

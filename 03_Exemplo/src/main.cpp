@@ -1,5 +1,5 @@
 /*********************************************************
-* Exemplo Criação de Task
+* Exemplo para Deletar uma Task
 * 
 * Esse exemplo exibe como criar duas tasks com diferentes tamanhos de Stacks
 *
@@ -16,8 +16,8 @@
 /*Definição do Pino do LED*/
 #define LED 2
 /* Variáveis para Armazenar o handle da Task */
-TaskHandle_t task1Handle = NULL;
-TaskHandle_t task2Handle = NULL;
+TaskHandle_t xTask1Handle;
+TaskHandle_t xTask2Handle;
 
 /* Protótipo das Tasks*/
 void vTask1(void *pvParameters ); 
@@ -34,20 +34,20 @@ void setup() {
 
   xTaskCreate(
      vTask1
-    ,  "Task1"              /* Nome da Task */
-    ,  configMINIMAL_STACK_SIZE /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  NULL                     /* parametro passado para a task*/
+    ,  "Task1"                    /* Nome da Task */
+    ,  2048                      /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  NULL                       /* parametro passado para a task*/
     ,  1                        /* Prioridade da task*/
-    ,  &task1Handle             /* handle da task*/
+    ,  &xTask1Handle             /* handle da task*/
     );    
 
     xTaskCreate(
      vTask2
     ,  "Task2"                  /* Nome da Task */
-    ,  1024                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
     ,  NULL                     /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
-    ,  &task2Handle             /* handle da task*/
+    ,  &xTask2Handle             /* handle da task*/
     );       
 }
 
@@ -87,6 +87,16 @@ void vTask2(void *pvParameters )
   while(1)
   {
     Serial.println("Task 2: " + String(count++));
-    vTaskDelay(pdMS_TO_TICKS(1000));    /* Delay de 1 segundos */
+
+    if(count>=10)
+    {
+        if(xTask2Handle != NULL)
+        {
+          Serial.println("Task 2 Deletada!");
+          vTaskDelete(xTask2Handle);
+        }
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(500));    /* Delay de 1 segundos */
   }
 }

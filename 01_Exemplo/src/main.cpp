@@ -27,20 +27,20 @@ void setup() {
   
   xTaskCreate(
      vTaskBlink
-    ,  "TaskBlink"   // Nome da Task
-    ,  1024          // Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente
-    ,  NULL          // parametro passado para a task
-    ,  2             // Prioridade da task
-    ,  NULL);        // handle da task
+    ,  "TaskBlink"              /* Nome da Task */
+    ,  configMINIMAL_STACK_SIZE /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  NULL                     /* parametro passado para a task*/
+    ,  2                        /* Prioridade da task*/
+    ,  NULL);                   /* handle da task*/
 }
 
-//Função loop
+/* Função loop */
 void loop() { 
-  vTaskDelay(pdMS_TO_TICKS(100000));
-  Serial.println("Oi");
+  vTaskDelay(pdMS_TO_TICKS(10000));    /* Delay de 10 segundos */
+  Serial.println("Oi");                 /* Print a mensagem "Oi" na serial*/
 }
 
-//Task Blink LED
+/* Task Blink LED */
 void vTaskBlink(void *pvParameters ){
 
   (void) pvParameters;
