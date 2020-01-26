@@ -48,7 +48,7 @@ void vTaskBlink(void *pvParameters ){
   pinMode(LED,OUTPUT);
 
   while(1){
-    digitalWrite(2,!digitalRead(2));
+    digitalWrite(LED,!digitalRead(LED));
     vTaskDelay(pdMS_TO_TICKS(200));
   }
 }

@@ -1,15 +1,8 @@
-/*********************************************************
-* Exemplo Blink LED - ESP32
-* Pisca o LED da placa em intervalos de 1 segundo
-* Exemplo para entender o fluxo de desenvolvimento no PIO
-* Por: Fábio Souza
-*********************************************************/
-
 /*inclusão da Biblioteca Arduino*/
 #include <Arduino.h>
 
 /*Definição do Pino do LED*/
-#define LED 5
+#define LED 2
 
 /*Função setup - é chamada apenas uma vez na inicialização */
 void setup() {

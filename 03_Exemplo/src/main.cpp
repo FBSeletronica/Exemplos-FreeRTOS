@@ -1,7 +1,5 @@
 /*********************************************************
 * Exemplo para Deletar uma Task
-* 
-* Esse exemplo exibe como criar duas tasks com diferentes tamanhos de Stacks
 *
 * Por: Fábio Souza
 *********************************************************/
