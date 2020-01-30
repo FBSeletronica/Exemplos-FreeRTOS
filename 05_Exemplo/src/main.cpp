@@ -1,5 +1,5 @@
 /*********************************************************
-* Exemplo de Utilitários de tarefas
+* Exemplo para verificação do consumo de memória pela tarefa - High Water Mark
 * 
 * Por: Fábio Souza
 *********************************************************/
@@ -65,26 +65,29 @@ void loop() {
 /* Task Blink LED */
 void vTask1(void *pvParameters )
 {
+  UBaseType_t uxHighWaterMark;
   (void) pvParameters;
-  TickType_t xLastWakeTime;
-
-  /* The xLastWakeTime variable needs to be initialized with the current tick count.
- This is the only time the variable is written to explicitly. After this, xLastWakeTime is
- automatically updated within vTaskDelayUntil(). */
- xLastWakeTime = xTaskGetTickCount();
 
   while(1)
   {
     digitalWrite(LED,HIGH);
-    vTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS( 100) );
+    vTaskDelay(pdMS_TO_TICKS(100));
     digitalWrite(LED,LOW);
-    vTaskDelayUntil( &xLastWakeTime, pdMS_TO_TICKS( 900 ) );    /* Delay de 900 milisegundos */
+    vTaskDelay(pdMS_TO_TICKS(1000));    /* Delay de 1 segundos */
+
+     /* Imprime a quantidade de bytes livres do Stack reservado para esta Task. */
+      uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
+      Serial.print("Task1 Stack Size: ");
+      Serial.println(uxHighWaterMark);
+      Serial.println(" ");
   }
 }
 
 /* Task Blink LED */
 void vTask2(void *pvParameters )
 {
+  UBaseType_t uxHighWaterMark;
+  //uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
   int count = 0;
   (void) pvParameters;
 
@@ -92,5 +95,11 @@ void vTask2(void *pvParameters )
   {
     Serial.println("Task 2: " + String(count++));
     vTaskDelay(pdMS_TO_TICKS(500));    /* Delay de 1 segundos */
+
+    /* Imprime a quantidade de bytes livres do Stack reservado para esta Task. */
+      uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
+      Serial.print("Task2 Stack Size: ");
+      Serial.println(uxHighWaterMark);
+      Serial.println(" ");
   }
 }

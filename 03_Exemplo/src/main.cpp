@@ -13,7 +13,8 @@
 
 /*Definição do Pino do LED*/
 #define LED 2
-/* Variáveis para Armazenar o handle da Task */
+
+/* Variáveis para armazenar o handle da Task */
 TaskHandle_t xTask1Handle;
 TaskHandle_t xTask2Handle;
 
@@ -30,30 +31,31 @@ void setup() {
   
   vInitHW();      /* Configuração do Hardware */
 
+  /* Cria a vTask1 */
   xTaskCreate(
-     vTask1
-    ,  "Task1"                    /* Nome da Task */
-    ,  2048                      /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  NULL                       /* parametro passado para a task*/
-    ,  1                        /* Prioridade da task*/
-    ,  &xTask1Handle             /* handle da task*/
-    );    
-
+              vTask1                        /*ponteiro para a função vTask1*/
+              ,  "Task1"                    /* Nome da Task */
+              ,  2048                       /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+              ,  NULL                       /* parametro passado para a task*/
+              ,  1                          /* Prioridade da task*/
+              ,  &xTask1Handle              /* handle da task*/
+              );    
+    /* Cria a vTask2 */
     xTaskCreate(
-     vTask2
-    ,  "Task2"                  /* Nome da Task */
-    ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  NULL                     /* parametro passado para a task*/
-    ,  2                        /* Prioridade da task*/
-    ,  &xTask2Handle             /* handle da task*/
-    );       
+              vTask2                     /* ponteiro para a função vTask2 */ 
+              ,  "Task2"                  /* Nome da Task */
+              ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+              ,  NULL                     /* parametro passado para a task*/
+              ,  2                        /* Prioridade da task*/
+              ,  &xTask2Handle             /* handle da task*/
+              );       
 }
 
 /* Função Init Harware */
 void vInitHW(void)
 {
-    Serial.begin(9600);
-    pinMode(LED,OUTPUT);
+    Serial.begin(9600); /* Inicializa comunicação serial com baudrate de 9600 bps */
+    pinMode(LED,OUTPUT); /* Configura pino do LED como saída Digital */ 
 
 }
 
@@ -79,8 +81,8 @@ void vTask1(void *pvParameters )
 /* Task Blink LED */
 void vTask2(void *pvParameters )
 {
-  int count = 0;
-  (void) pvParameters;
+  uint8_t count = 0;      /* declara e inicializa variável contador com 0*/
+  (void) pvParameters;  /* Apenas para o Compilador não retornar warnings */
 
   while(1)
   {
