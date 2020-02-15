@@ -24,7 +24,6 @@ void vtaskBlinkLed(void *pvParameters);
 
 int valor = 100;
 
-
 /* Funções auxiliares */
 void vInitHW(void);
 
@@ -47,7 +46,7 @@ void setup() {
      vTask2
     ,  "Task2"                  /* Nome da Task */
     ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  (void*)valor               /* parametro passado para a task*/
+    ,  (void*)valor              /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
     ,  &xTask2Handle             /* handle da task*/
     );       

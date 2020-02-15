@@ -15,6 +15,7 @@
 
 /*Definição do Pino do LED*/
 #define LED 2
+
 /* Variáveis para Armazenar o handle da Task */
 TaskHandle_t task1Handle = NULL;
 TaskHandle_t task2Handle = NULL;
@@ -44,7 +45,7 @@ void setup() {
     xTaskCreate(
      vTask2
     ,  "Task2"                  /* Nome da Task */
-    ,  1024                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  2048                    /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
     ,  NULL                     /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
     ,  &task2Handle             /* handle da task*/

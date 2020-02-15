@@ -33,7 +33,7 @@ void setup() {
   xTaskCreate(
      vTask1
     ,  "Task1"                    /* Nome da Task */
-    ,  2048                      /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  768                      /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
     ,  NULL                       /* parametro passado para a task*/
     ,  1                        /* Prioridade da task*/
     ,  &xTask1Handle             /* handle da task*/

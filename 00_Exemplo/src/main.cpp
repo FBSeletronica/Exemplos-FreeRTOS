@@ -9,7 +9,7 @@
 #include <Arduino.h>
 
 /*Definição do Pino do LED*/
-#define LED 5
+#define LED 2
 
 /*Função setup - é chamada apenas uma vez na inicialização */
 void setup() {

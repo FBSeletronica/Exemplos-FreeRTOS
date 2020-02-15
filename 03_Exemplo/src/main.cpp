@@ -90,10 +90,12 @@ void vTask2(void *pvParameters )
 
     if(count>=10)
     {
-        if(xTask2Handle != NULL)
+        if(xTask1Handle != NULL)
         {
           Serial.println("Task 2 Deletada!");
-          vTaskDelete(xTask2Handle);
+          vTaskDelete(xTask1Handle);
+          digitalWrite(LED,LOW);
+          xTask1Handle = NULL;
         }
     }
 
