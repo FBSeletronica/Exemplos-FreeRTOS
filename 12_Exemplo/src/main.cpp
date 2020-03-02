@@ -38,7 +38,6 @@ void setup() {
     while(1);
   }
 
-
   /* Cria a vTaskADC */
   xTaskCreatePinnedToCore(vTaskADC,  "TaskADC",  configMINIMAL_STACK_SIZE + 1024,  NULL,  1,  &xTaskADCHandle,APP_CPU_NUM);    
 }
@@ -56,7 +55,7 @@ void loop() {
 /* Função Init Hardware */
 void vInitHW(void)
 {
-    Serial.begin(9600); /* Inicializa comunicação serial com baudrate de 9600 bps */
+    Serial.begin(4800); /* Inicializa comunicação serial com baudrate de 9600 bps */
     pinMode(LED,OUTPUT); /* configura pino do LED como saída*/
 
 }

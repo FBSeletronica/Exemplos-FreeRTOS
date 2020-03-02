@@ -187,6 +187,7 @@ void vTaskMQTT(void *pvParameters){
         client.publish("sensor/S0", mensagem);
         Serial.print("Valor enviado: ");
         Serial.println(mensagem);
+        client.loop();
         
         vTaskDelay(100);
       }

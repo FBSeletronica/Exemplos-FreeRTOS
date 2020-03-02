@@ -45,7 +45,7 @@ void setup()
   /*Inicia Hardware */
   vInitHW();
   /* Cria semáforo contador com 10 posições*/
-  xCountingSemaphore = xSemaphoreCreateCounting( 10, 0 );
+  xCountingSemaphore = xSemaphoreCreateCounting( 255, 0 );
   
   /* Cria task para tratar BT */
   xTaskCreatePinnedToCore(vTaskTrataISRBT,  "Task Trata ISR BT",  configMINIMAL_STACK_SIZE + 1024,  NULL,  4,  &xTaskTrataISRBTHandle,APP_CPU_NUM);    
@@ -61,12 +61,15 @@ void loop() {
 void vTaskTrataISRBT( void * pvParameters )
 {
   (void) pvParameters;
+  UBaseType_t x;
   /* loop forever */
   while(1)
   {
     /* Aguarda a liberação do Semaforo pela ISR*/
     xSemaphoreTake( xCountingSemaphore, portMAX_DELAY );
     Serial.println("Tratando a interrupção");
+    x = uxSemaphoreGetCount(xCountingSemaphore);
+    Serial.println(x);
     /*inverte estado do LED*/
     digitalWrite(LED, !digitalRead(LED));
     /* elay here to see LED blinky */
