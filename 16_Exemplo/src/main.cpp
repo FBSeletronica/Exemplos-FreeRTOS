@@ -11,8 +11,6 @@
 #include "freertos/task.h"
 #include "freertos/timers.h"
 
-//#define configTIMER_TASK_PRIORITY  10
-
 
 /*definição dos pinos*/
 #define LED 2       /*LED ligado ao GPIO2*/
@@ -52,7 +50,7 @@ void setup()
   xTimer2 = xTimerCreate("Timer2", pdMS_TO_TICKS(10000), pdFALSE, 0, callBackTimer2);
   
   /* Cria task1 */
-  xTaskCreatePinnedToCore(vTask1,  "Task1",  configMINIMAL_STACK_SIZE + 1024,  NULL, 2,  &xTask1,APP_CPU_NUM);    
+  xTaskCreatePinnedToCore(vTask1,  "Task1",  configMINIMAL_STACK_SIZE + 1024,  NULL, 1,  &xTask1,APP_CPU_NUM);    
 
   /*Inicia o timer1*/
   xTimerStart(xTimer1, 0);
@@ -80,6 +78,7 @@ void vTask1( void * pvParameters )
       {
           digitalWrite(LED2,HIGH);
           debouncingTime = 0;
+          Serial.println("Timer 2 Criado");
           xTimerStart(xTimer2, 0);
       }
     }
@@ -95,6 +94,7 @@ void vInitHW(void)
 {
     Serial.begin(9600); /* Inicializa comunicação serial com baudrate de 9600 bps */
     pinMode(LED,OUTPUT); /* configura pino do LED como saída*/
+    pinMode(LED2,OUTPUT);
     pinMode(BT, INPUT_PULLUP); /*configura pino do Botão */ 
 }
 

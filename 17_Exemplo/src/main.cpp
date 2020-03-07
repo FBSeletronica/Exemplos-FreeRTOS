@@ -106,14 +106,13 @@ void callBackTimer1(TimerHandle_t pxTimer )
   BaseType_t xHigherPriorityTaskWoken;
   count++;
   if(count == 5){
-    xEventGroupSetBitsFromISR(xEventos,TASK_1_BIT, &xHigherPriorityTaskWoken);
+    xEventGroupSetBits(xEventos,TASK_1_BIT);
   }else if(count == 10){
-    xEventGroupSetBitsFromISR(xEventos,TASK_2_BIT, &xHigherPriorityTaskWoken);
+    xEventGroupSetBits(xEventos,TASK_2_BIT);
   }
   else if(count == 15){
       count = 0;
-      xEventGroupSetBitsFromISR(xEventos,TASK_1_BIT|TASK_2_BIT, &xHigherPriorityTaskWoken);
-
+      xEventGroupSetBits(xEventos,TASK_1_BIT|TASK_2_BIT);
   }
 }
 
