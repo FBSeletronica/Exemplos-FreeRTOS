@@ -23,7 +23,7 @@ TaskHandle_t xTaskTrataISRBTHandle;
 /* Protótipo das Tasks*/
 void vTaskTrataISRBT( void *pvParameters );
 
-/*handle do semaforo condor*/
+/*handle do semaforo contador*/
 SemaphoreHandle_t xCountingSemaphore;
 
 /* Protótipo das Tasks*/
