@@ -7,7 +7,6 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-
 // MACADDRESS da placa a ser conectada
 uint8_t broadcastAddress[] = {0x30, 0xAE, 0xA4, 0x0B, 0x66, 0x34};
 

@@ -100,12 +100,9 @@ void vInitHW(void)
 
 void callBackTimer1(TimerHandle_t pxTimer )
 {
-   
    digitalWrite(LED,!digitalRead(LED));
-
 }
 void callBackTimer2(TimerHandle_t pxTimer )
 {
   digitalWrite(LED2,LOW);//apaga LED
-
 }

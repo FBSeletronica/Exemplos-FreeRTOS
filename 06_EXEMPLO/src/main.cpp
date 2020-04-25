@@ -13,6 +13,7 @@
 
 /*Definição do Pino do LED*/
 #define LED 2
+#define LED2 4
 /* Variáveis para Armazenar o handle da Task */
 TaskHandle_t xTask1Handle;
 TaskHandle_t xTask2Handle;
@@ -23,6 +24,8 @@ void vTask2(void *pvParameters );
 void vtaskBlinkLed(void *pvParameters);
 
 int valor = 100;
+
+char x;
 
 /* Funções auxiliares */
 void vInitHW(void);
@@ -55,7 +58,7 @@ void setup() {
         vtaskBlinkLed
     ,  "LED1"                   /* Nome da Task */
     ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  (void*)2                 /* parametro passado para a task*/
+    ,  (void*)LED                 /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
     ,  &xTask2Handle            /* handle da task*/
 
@@ -65,7 +68,7 @@ void setup() {
         vtaskBlinkLed
     ,  "LED2"                   /* Nome da Task */
     ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  (void*)4                /* parametro passado para a task*/
+    ,  (void*)LED2                 /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
     ,  &xTask2Handle            /* handle da task*/
 
@@ -99,7 +102,7 @@ void vTask1(void *pvParameters )
   }
 }
 
-/* Task Blink LED */
+/* Task print */
 void vTask2(void *pvParameters )
 {
   int count = (int)pvParameters;
@@ -111,10 +114,14 @@ void vTask2(void *pvParameters )
   }
 }
 
+/* Task blink LED */
 void vtaskBlinkLed(void *pvParameters){
+  
   int pin = (int)pvParameters;
 
   pinMode(pin,OUTPUT);
+
+  Serial.println(pcTaskGetTaskName(xTask2Handle));
 
   while(1)
   {

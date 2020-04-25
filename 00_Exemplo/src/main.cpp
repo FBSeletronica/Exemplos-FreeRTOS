@@ -15,6 +15,7 @@
 void setup() {
   /*Configura pino do LED como saída*/
   pinMode(LED,OUTPUT);
+  Serial.begin(115200);
 }
 
 /*Função loop - fica em loop*/
@@ -23,4 +24,5 @@ void loop() {
   delay(1000);
   digitalWrite(LED,LOW);
   delay(1000);
+  Serial.println("Hello");
 }

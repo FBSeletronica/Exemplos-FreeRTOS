@@ -35,7 +35,7 @@ void setup() {
 
   xTaskCreate(
      vTask1
-    ,  "Task1"              /* Nome da Task */
+    ,  "Task1"                  /* Nome da Task */
     ,  configMINIMAL_STACK_SIZE /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
     ,  NULL                     /* parametro passado para a task*/
     ,  1                        /* Prioridade da task*/
@@ -45,7 +45,7 @@ void setup() {
     xTaskCreate(
      vTask2
     ,  "Task2"                  /* Nome da Task */
-    ,  2048                    /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
     ,  NULL                     /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
     ,  &task2Handle             /* handle da task*/
@@ -79,7 +79,7 @@ void vTask1(void *pvParameters )
   }
 }
 
-/* Task Blink LED */
+/* Task print */
 void vTask2(void *pvParameters )
 {
   int count = 0;
