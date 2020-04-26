@@ -80,7 +80,7 @@ void setup() {
   
   vInitHW();
   
-  xFila = xQueueCreate(1, sizeof(int));//Cria a fila com 5 slots com tamanho de um int
+  xFila = xQueueCreate(1, sizeof(int));//Cria a fila com 1 slots com tamanho de um int
   
   if( xFila == NULL )
   {
@@ -106,7 +106,7 @@ void loop() {
 /* Função Init Harware */
 void vInitHW(void)
 {
-    Serial.begin(9600); /* Inicializa comunicação serial com baudrate de 9600 bps */
+    Serial.begin(115200); /* Inicializa comunicação serial com baudrate de 9600 bps */
     pinMode(LED,OUTPUT); /* configura pino do LED como saída*/
 
    if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { 
@@ -137,7 +137,7 @@ void vTaskADC(void *pvParameters )
   {
     adcValue = analogRead(34);
     xQueueSend(xFila, &adcValue, portMAX_DELAY) ;/* envia valor atual de count para fila*/
-    vTaskDelay(pdMS_TO_TICKS(5000)); /* Aguarda 500 ms antes de uma nova iteração*/
+    vTaskDelay(pdMS_TO_TICKS(5000)); /* Aguarda 5000 ms antes de uma nova iteração*/
   }
 }
 
@@ -189,7 +189,7 @@ void vTaskMQTT(void *pvParameters){
         Serial.println(mensagem);
         client.loop();
         
-        vTaskDelay(100);
+        vTaskDelay(5000);
       }
       else
       {
