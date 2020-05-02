@@ -1,6 +1,5 @@
 /*********************************************************
-* Exemplo de passagem de parametro para Tasks
-* 
+* Exemplo de passagem de parametro para Tasks na criação* 
 * Por: Fábio Souza
 *********************************************************/
 
@@ -14,17 +13,16 @@
 /*Definição do Pino do LED*/
 #define LED 2
 #define LED2 4
+
 /* Variáveis para Armazenar o handle da Task */
-TaskHandle_t xTask1Handle;
-TaskHandle_t xTask2Handle;
+TaskHandle_t xTask1Handle, xTaskLED1Handle, xTaskLED2Handle;
+
 
 /* Protótipo das Tasks*/
 void vTask1(void *pvParameters ); 
-void vTask2(void *pvParameters ); 
 void vtaskBlinkLed(void *pvParameters);
 
 int valor = 100;
-
 char x;
 
 /* Funções auxiliares */
@@ -35,42 +33,32 @@ void setup() {
   
   vInitHW();      /* Configuração do Hardware */
 
-    // xTaskCreate(
-    //  vTask1
-    // ,  "Task1"                    /* Nome da Task */
-    // ,  2048                      /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    // ,  (void*)valor              /* parametro passado para a task*/
-    // ,  1                        /* Prioridade da task*/
-    // ,  &xTask1Handle             /* handle da task*/
-    // );     
-
-
     xTaskCreate(
-     vTask2
-    ,  "Task2"                  /* Nome da Task */
-    ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  (void*)valor              /* parametro passado para a task*/
+     vTask1
+    ,  "Task1"                  /* Nome da Task */
+    ,  2048                     /* Stack Size*/
+    ,  (void*)valor             /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
-    ,  &xTask2Handle             /* handle da task*/
+    ,  &xTask1Handle             /* handle da task*/
     );       
 
     xTaskCreate(
         vtaskBlinkLed
     ,  "LED1"                   /* Nome da Task */
-    ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  2048                     /* Stack Size*/
     ,  (void*)LED                 /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
-    ,  &xTask2Handle            /* handle da task*/
+    ,  &xTaskLED1Handle            /* handle da task*/
 
     );
 
     xTaskCreate(
         vtaskBlinkLed
     ,  "LED2"                   /* Nome da Task */
-    ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  (void*)LED2                 /* parametro passado para a task*/
+    ,  2048                     /* Stack Size*/
+    ,  (void*)LED2              /* parametro passado para a task*/
     ,  2                        /* Prioridade da task*/
-    ,  &xTask2Handle            /* handle da task*/
+    ,  &xTaskLED2Handle         /* handle da task*/
 
     );
 }
@@ -88,22 +76,9 @@ void loop() {
     vTaskDelay(pdMS_TO_TICKS(3000));    /* Delay de 3 segundos */
 }
 
-/* Task Blink LED */
-void vTask1(void *pvParameters )
-{
-  int tempo = (int)pvParameters;
-
-  while(1)
-  {
-    digitalWrite(LED,HIGH);
-    vTaskDelay(pdMS_TO_TICKS(tempo));
-    digitalWrite(LED,LOW);
-    vTaskDelay(pdMS_TO_TICKS(tempo));    
-  }
-}
 
 /* Task print */
-void vTask2(void *pvParameters )
+void vTask1(void *pvParameters )
 {
   int count = (int)pvParameters;
 
@@ -117,11 +92,9 @@ void vTask2(void *pvParameters )
 /* Task blink LED */
 void vtaskBlinkLed(void *pvParameters){
   
-  int pin = (int)pvParameters;
-
-  pinMode(pin,OUTPUT);
-
-  Serial.println(pcTaskGetTaskName(xTask2Handle));
+  int pin = (int)pvParameters; /*lê o parametro passado*/
+  pinMode(pin,OUTPUT); /*Configura o Pino como Saída*/
+  Serial.println(pcTaskGetTaskName(NULL)); /*Pega o nome da Task*/
 
   while(1)
   {
