@@ -3,7 +3,6 @@
 * Pisca o LED da placa em intervalos de 200 milisegundo e
 * Envia a mensagem "Oi" a cada 10 segundos
 * Exemplo para verificar o funcionamento de um RTOS
-*
 * Por: Fábio Souza
 *********************************************************/
 
@@ -44,7 +43,6 @@ void loop() {
 void vTaskBlink(void *pvParameters ){
 
   (void) pvParameters;
-
   pinMode(LED,OUTPUT);
 
   while(1){
