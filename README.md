@@ -25,7 +25,7 @@ Material usado para ensino da API do FreeRTOS
 - 00: Pisca o LED da placa em intervalos de 1 segundo. Exemplo para entender o fluxo de desenvolvimento no PIO
 - 01: Exemplo para verificar o funcionamento de um RTOS usando o FreeRTOS
 - 02: Exemplo para criar duas tasks com diferentes tamanhos de Stacks
-- 03:
+- 03: Exemplo para Deletar uma Task
 - 04:
 - 05:
 - 06:

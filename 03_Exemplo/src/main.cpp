@@ -1,6 +1,5 @@
 /*********************************************************
 * Exemplo para Deletar uma Task
-*
 * Por: Fábio Souza
 *********************************************************/
 
@@ -15,13 +14,11 @@
 #define LED 2
 
 /* Variáveis para armazenar o handle da Task */
-TaskHandle_t xTask1Handle;
-TaskHandle_t xTask2Handle;
+TaskHandle_t xTask1Handle,xTask2Handle;
 
 /* Protótipo das Tasks*/
 void vTask1(void *pvParameters ); 
 void vTask2(void *pvParameters ); 
-
 
 /* Funções auxiliares */
 void vInitHW(void);
@@ -33,21 +30,22 @@ void setup() {
 
   /* Cria a vTask1 */
   xTaskCreate(
-              vTask1                        /*ponteiro para a função vTask1*/
-              ,  "Task1"                    /* Nome da Task */
-              ,  2048                       /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-              ,  NULL                       /* parametro passado para a task*/
-              ,  1                          /* Prioridade da task*/
-              ,  &xTask1Handle              /* handle da task*/
+              vTask1                              /* Ponteiro para a função vTask1*/
+              ,  "Task1"                          /* Nome da Task */
+              ,  configMINIMAL_STACK_SIZE + 1048  /* Stack Size*/
+              ,  NULL                             /* Parametro passado para a task*/
+              ,  1                                /* Prioridade da task*/
+              ,  &xTask1Handle                    /* Handle da task*/
               );    
+
     /* Cria a vTask2 */
     xTaskCreate(
-              vTask2                     /* ponteiro para a função vTask2 */ 
-              ,  "Task2"                  /* Nome da Task */
-              ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-              ,  NULL                     /* parametro passado para a task*/
-              ,  2                        /* Prioridade da task*/
-              ,  &xTask2Handle             /* handle da task*/
+              vTask2                              /* Ponteiro para a função vTask2 */ 
+              ,  "Task2"                          /* Nome da Task */
+              ,  configMINIMAL_STACK_SIZE + 1048  /* Stack Size*/
+              ,  NULL                             /* Parametro passado para a task*/
+              ,  2                                /* Prioridade da task*/
+              ,  &xTask2Handle                    /* Handle da task*/
               );       
 }
 
@@ -64,7 +62,7 @@ void loop() {
     vTaskDelay(pdMS_TO_TICKS(3000));    /* Delay de 3 segundos */
 }
 
-/* Task Blink LED */
+/* Task 1 -  Blink LED */
 void vTask1(void *pvParameters )
 {
   (void) pvParameters;
@@ -72,7 +70,7 @@ void vTask1(void *pvParameters )
   while(1)
   {
     digitalWrite(LED,HIGH);
-    vTaskDelay(pdMS_TO_TICKS(100));
+    vTaskDelay(pdMS_TO_TICKS(100));     /*Delay de 100 ms*/
     digitalWrite(LED,LOW);
     vTaskDelay(pdMS_TO_TICKS(1000));    /* Delay de 1 segundos */
   }
@@ -81,24 +79,26 @@ void vTask1(void *pvParameters )
 /* Task Blink LED */
 void vTask2(void *pvParameters )
 {
-  uint8_t count = 0;      /* declara e inicializa variável contador com 0*/
+
   (void) pvParameters;  /* Apenas para o Compilador não retornar warnings */
+  uint8_t count = 0;      /* declara e inicializa variável contador com 0*/
 
   while(1)
   {
-    Serial.println("Task 2: " + String(count++));
+    /* Imprime valor do contador na Serial*/
+    Serial.println("Task 2: " + String(count++));  
 
-    if(count>=10)
+    /*Verifica valor do contador*/
+    if(count>=10) /*se maior ou igual a 10*/
     {
-        if(xTask1Handle != NULL)
+        if(xTask1Handle != NULL)    /*verifica se o handle da task é diferente de NULL*/
         {
-          Serial.println("Task 1 Deletada!");
-          vTaskDelete(xTask1Handle);  
-          digitalWrite(LED,LOW);
-          xTask1Handle = NULL;
+          Serial.println("Task 1 Deletada!"); /*Mensagem na serial*/
+          vTaskDelete(xTask1Handle);          /*Deleta task 1*/  
+          digitalWrite(LED,LOW);              /*Garante que LED ficará apagado*/
+          xTask1Handle = NULL;                /*atualiza valor da variável para NULL*/
         }
     }
-
-    vTaskDelay(pdMS_TO_TICKS(500));    /* Delay de 1 segundos */
+    vTaskDelay(pdMS_TO_TICKS(500));    /* Delay de 0.5 segundos */
   }
 }
