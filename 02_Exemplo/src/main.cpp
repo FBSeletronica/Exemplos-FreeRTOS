@@ -1,8 +1,6 @@
 /*********************************************************
 * Exemplo Criação de Task
-* 
 * Esse exemplo exibe como criar duas tasks com diferentes tamanhos de Stacks
-*
 * Por: Fábio Souza
 *********************************************************/
 
@@ -24,7 +22,6 @@ TaskHandle_t task2Handle = NULL;
 void vTask1(void *pvParameters ); 
 void vTask2(void *pvParameters ); 
 
-
 /* Funções auxiliares */
 void vInitHW(void);
 
@@ -34,30 +31,29 @@ void setup() {
   vInitHW();      /* Configuração do Hardware */
 
   xTaskCreate(
-     vTask1
+     vTask1                     /* função da task*/   
     ,  "Task1"                  /* Nome da Task */
-    ,  configMINIMAL_STACK_SIZE /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
+    ,  configMINIMAL_STACK_SIZE /* Stack Size */
     ,  NULL                     /* parametro passado para a task*/
     ,  1                        /* Prioridade da task*/
     ,  &task1Handle             /* handle da task*/
     );    
 
     xTaskCreate(
-     vTask2
-    ,  "Task2"                  /* Nome da Task */
-    ,  2048                     /* Stack Size, não se preocupe com esse valor agora. Vamos estudar mais pra frente*/
-    ,  NULL                     /* parametro passado para a task*/
-    ,  2                        /* Prioridade da task*/
-    ,  &task2Handle             /* handle da task*/
+     vTask2                             /* função da task*/
+    ,  "Task2"                          /* Nome da Task */
+    ,  configMINIMAL_STACK_SIZE + 1024  /* Stack Size,*/
+    ,  NULL                             /* parametro passado para a task*/
+    ,  2                                /* Prioridade da task*/
+    ,  &task2Handle                     /* handle da task*/
     );       
 }
 
 /* Função Init Harware */
 void vInitHW(void)
 {
-    Serial.begin(9600);
-    pinMode(LED,OUTPUT);
-
+    Serial.begin(9600);   /*inicializa a comunicação serial*/
+    pinMode(LED,OUTPUT);  /*Configura pino do LED como saída*/
 }
 
 /* Função loop */
@@ -65,25 +61,24 @@ void loop() {
     vTaskDelay(pdMS_TO_TICKS(3000));    /* Delay de 3 segundos */
 }
 
-/* Task Blink LED */
+/* Task 1 - Blink LED */
 void vTask1(void *pvParameters )
 {
   (void) pvParameters;
 
   while(1)
   {
-    digitalWrite(LED,HIGH);
-    vTaskDelay(pdMS_TO_TICKS(100));
-    digitalWrite(LED,LOW);
-    vTaskDelay(pdMS_TO_TICKS(1000));    /* Delay de 1 segundos */
+    digitalWrite(LED,!digitalRead(LED)); /*inverte o estado do LED*/
+    vTaskDelay(pdMS_TO_TICKS(100));     /* Delay de 1 segundos */
   }
 }
 
-/* Task print */
+/* Task 2 - Imprime valor na serial*/
 void vTask2(void *pvParameters )
 {
-  int count = 0;
-  (void) pvParameters;
+
+  (void) pvParameters;  
+  int count = 0;        /*variável auxiliar */
 
   while(1)
   {
