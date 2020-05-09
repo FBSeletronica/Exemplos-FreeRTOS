@@ -58,7 +58,7 @@ void setup()
 }
 
 void loop() {
- 
+ vTaskDelay(pdMS_TO_TICKS(3000));
 }
 
 
@@ -74,17 +74,18 @@ void vTask1( void * pvParameters )
   {
     if(digitalRead(BT)==LOW){
       debouncingTime++;
-      if(debouncingTime >= 10)
+      if(debouncingTime >= 10 )
       {
           digitalWrite(LED2,HIGH);
           debouncingTime = 0;
-          Serial.println("Timer 2 Criado");
+          Serial.println("Timer 2 Start");
           xTimerStart(xTimer2, 0);
       }
     }
     else{
       debouncingTime = 0;
     }
+    
     vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
@@ -104,5 +105,5 @@ void callBackTimer1(TimerHandle_t pxTimer )
 }
 void callBackTimer2(TimerHandle_t pxTimer )
 {
-  digitalWrite(LED2,LOW);//apaga LED
+  digitalWrite(LED2,LOW);//apaga LED  
 }
