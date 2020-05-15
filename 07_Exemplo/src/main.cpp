@@ -39,7 +39,6 @@ void vInitHW(void)
 {
     Serial.begin(9600);
     pinMode(LED,OUTPUT);
-
 }
 
 /* Função loop */
@@ -48,7 +47,6 @@ void loop() {
     Serial.print(" : ");
     Serial.print("Nucleo =");
     Serial.println(xPortGetCoreID());
-
 
     vTaskDelay(pdMS_TO_TICKS(500));    /* Delay de 0.5 segundos */  
 }

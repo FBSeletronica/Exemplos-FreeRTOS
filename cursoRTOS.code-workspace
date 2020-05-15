@@ -62,6 +62,18 @@
 		},
 		{
 			"path": "00_Exemplo"
+		},
+		{
+			"name": "18_Exemplo",
+			"path": "18_Exemplo"
+		},
+		{
+			"name": "19_Exemplo",
+			"path": "19_Exemplo"
+		},
+		{
+			"name": "20_Exemplo",
+			"path": "20_Exemplo"
 		}
 	]
 }

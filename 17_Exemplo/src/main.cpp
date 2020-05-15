@@ -103,7 +103,6 @@ void vTask2( void * parameter )
 void callBackTimer1(TimerHandle_t pxTimer )
 {
   
-  BaseType_t xHigherPriorityTaskWoken;
   count++;
   if(count == 5){
     xEventGroupSetBits(xEventos,TASK_1_BIT);
