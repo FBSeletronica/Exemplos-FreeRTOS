@@ -1,6 +1,5 @@
 /*********************************************************
-* Exemplo que demonstra usar filas para enviar valor do ADC
-* para um tópico MQTT
+* Exemplo para assinatura de tópico MQTT
 * Por: Fábio Souza
 *********************************************************/
 
@@ -37,12 +36,12 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 /* configuraçãoes da REDE e broker MQTT*/
-const char* ssid = "xxxxxx";
-const char* password =  "xxxxxxxx";
-const char* mqttServer = "mqtt.eclipse.org";
+const char* ssid = "xxxxxxxxxxx";
+const char* password =  "xxxxxxxxxxxx";
+const char* mqttServer = "io.adafruit.com";
 const int mqttPort = 1883;
-const char* mqttUser = "abcdefg";
-const char* mqttPassword = "123456";
+const char* mqttUser = "xxxxxxxxxxxxxx";
+const char* mqttPassword = "xxxxxxxxxxxxxxxxxxxx";
 
 QueueHandle_t xFila; /*cria objeto fila */
 
@@ -66,12 +65,37 @@ void reconect() {
      if (client.connect("ESP32Client", mqttUser, mqttPassword ))
     {
       Serial.println("Conectado ao broker!");
+      //subscreve no tópico
+      client.subscribe("fabiosouza_io/feeds/L1", 1); //nivel de qualidade: QoS 1
     }
     else
     {
       Serial.print("Falha na conexao ao broker - Estado: ");
       Serial.print(client.state());
       vTaskDelay(pdMS_TO_TICKS(100));
+    }
+  }
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+
+  //armazena msg recebida em uma sring
+  payload[length] = '\0';
+  String strMSG = String((char*)payload);
+
+  Serial.print("Mensagem chegou do tópico: ");
+  Serial.println(topic);
+  Serial.print("Mensagem:");
+  Serial.print(strMSG);
+  Serial.println();
+  Serial.println("-----------------------");
+
+  //aciona saída conforme msg recebida
+  if (String(topic) == "fabiosouza_io/feeds/L1") {
+    if (strMSG == "1") {        //se msg "1"
+      digitalWrite(LED, HIGH);  //coloca saída em HIGH para ligar a Lampada 
+    } else if (strMSG == "0") {  //se msg "0"
+      digitalWrite(LED, LOW);   //coloca saída em HIGH para desligar a Lampada 
     }
   }
 }
@@ -92,12 +116,12 @@ void setup() {
   /* Cria a vTaskPrint */
   xTaskCreatePinnedToCore(vTaskPrint,  "TaskPrint",  configMINIMAL_STACK_SIZE + 1024,  NULL,  1,  &xTaskPrintHandle,APP_CPU_NUM);    
   /* Cria Task Para enviar dado via MQTT*/
-  xTaskCreatePinnedToCore(vTaskMQTT,  "TaskMQTT",  configMINIMAL_STACK_SIZE + 1024,  NULL,  1,  &xTaskMQTTHandle,PRO_CPU_NUM);     
+  xTaskCreatePinnedToCore(vTaskMQTT,  "TaskMQTT",  configMINIMAL_STACK_SIZE + 1024,  NULL,  1,  &xTaskMQTTHandle,APP_CPU_NUM);     
 
 }
 
 void loop() {
-  digitalWrite(LED, !digitalRead(LED));
+  client.loop(); //atauliza conexão MQTT a cada 1 segundo
   vTaskDelay(pdMS_TO_TICKS(1000));    /* Delay de 1 segundos */
 }
 
@@ -155,7 +179,7 @@ void vTaskPrint(void *pvParameters )
         display.print("ADC:");
         display.println(String(valor_recebido));
         display.display(); 
-        Serial.println("ADC:" + String(valor_recebido)); //imprime valor recebido
+        //Serial.println("ADC:" + String(valor_recebido)); //imprime valor recebido
       }
       else
       {
@@ -170,15 +194,17 @@ void vTaskMQTT(void *pvParameters){
   int valor_recebido = 0;
 
   client.setServer(mqttServer, mqttPort);
-
+  client.setCallback(callback);
+  
   while(1)
   {
-
-     if(xQueueReceive(xFila, &valor_recebido, portMAX_DELAY) == pdTRUE) //verifica se há valor na fila para ser lido. Espera 1 segundo
+    
+      if(xQueueReceive(xFila, &valor_recebido, portMAX_DELAY) == pdTRUE) //verifica se há valor na fila para ser lido. Espera 1 segundo
       {
         if(!client.connected()){
           reconect();
         }
+        
         
         //Serial.println("ADC:" + String(valor_recebido)); //imprime valor recebido
         sprintf(mensagem, "%d", valor_recebido);
@@ -187,13 +213,12 @@ void vTaskMQTT(void *pvParameters){
         client.publish("fabiosouza_io/feeds/test", mensagem);
         Serial.print("Valor enviado: ");
         Serial.println(mensagem);
-        client.loop();
         
         vTaskDelay(5000);
       }
       else
       {
-        Serial.println("TIMEOUT");    //ocorreu timeout
+        Serial.println("TIMEOUT");
       }
  
 
