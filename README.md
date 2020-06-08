@@ -26,7 +26,7 @@ Material usado para ensino da API do FreeRTOS
 - 01: Exemplo para verificar o funcionamento de um RTOS usando o FreeRTOS
 - 02: Exemplo para criar duas tasks com diferentes tamanhos de Stacks
 - 03: Exemplo para Deletar uma Task
-- 04:
+- 04: Exemplo para Parar e reiniciar uma Task
 - 05:
 - 06:
 - 07:
@@ -40,6 +40,13 @@ Material usado para ensino da API do FreeRTOS
 - 15:
 - 16:
 - 17:
+- 18: 
+
+## Extras
+
+- 1: espNowReceiver
+- 2: espNowSender
+- 3: ESP32_getMAC
 
 
 
