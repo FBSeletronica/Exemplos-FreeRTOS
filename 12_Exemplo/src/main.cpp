@@ -19,7 +19,7 @@
 TaskHandle_t xTaskADCHandle;
 
 /* Protótipo das Tasks*/
-void vTaskADC(void *pvParameters ); 
+void vTaskADC(void *pvParameters );
 
 SemaphoreHandle_t xBinarySemaphore;
 
@@ -27,9 +27,9 @@ SemaphoreHandle_t xBinarySemaphore;
 void vInitHW(void);
 
 void setup() {
-  
+
   vInitHW();
-  
+
   xBinarySemaphore = xSemaphoreCreateBinary(); //Cria o semáfor binário
 
   if( xBinarySemaphore == NULL )
@@ -39,12 +39,11 @@ void setup() {
   }
 
   /* Cria a vTaskADC */
-  xTaskCreatePinnedToCore(vTaskADC,  "TaskADC",  configMINIMAL_STACK_SIZE + 1024,  NULL,  1,  &xTaskADCHandle,APP_CPU_NUM);    
+  xTaskCreatePinnedToCore(vTaskADC,  "TaskADC",  configMINIMAL_STACK_SIZE + 1024,  NULL,  1,  &xTaskADCHandle,APP_CPU_NUM);
 }
 
 void loop() {
   digitalWrite(LED, !digitalRead(LED));
-  xSemaphoreTake( xBinarySemaphore, portMAX_DELAY );
   Serial.println("Essa Mensagem veio do LOOP e ocorre sempre que o LED é invertido");
   Serial.println("Valor do LED: " + String(digitalRead(LED)) +"\r\n");
   xSemaphoreGive(xBinarySemaphore);
@@ -55,16 +54,15 @@ void loop() {
 /* Função Init Hardware */
 void vInitHW(void)
 {
-    Serial.begin(4800); /* Inicializa comunicação serial com baudrate de 9600 bps */
+    Serial.begin(9600); /* Inicializa comunicação serial com baudrate de 9600 bps */
     pinMode(LED,OUTPUT); /* configura pino do LED como saída*/
-
 }
 
 /* impementação da TaskADC */
 void vTaskADC(void *pvParameters )
 {
   (void) pvParameters;
-  
+
   int adcValue;
   xSemaphoreGive(xBinarySemaphore);
   while(1)
@@ -72,7 +70,5 @@ void vTaskADC(void *pvParameters )
     xSemaphoreTake( xBinarySemaphore, portMAX_DELAY );
     adcValue = analogRead(34);
     Serial.println("ADC:" + String(adcValue) +"\r\n"); //imprime valor da convesão AD
-    xSemaphoreGive(xBinarySemaphore);
   }
 }
-
