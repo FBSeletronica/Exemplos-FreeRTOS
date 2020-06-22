@@ -46,6 +46,7 @@ void loop() {
   digitalWrite(LED, !digitalRead(LED));
   Serial.println("Essa Mensagem veio do LOOP e ocorre sempre que o LED é invertido");
   Serial.println("Valor do LED: " + String(digitalRead(LED)) +"\r\n");
+  vTaskDelay(pdMS_TO_TICKS(1000));
   xSemaphoreGive(xBinarySemaphore);
 }
 
